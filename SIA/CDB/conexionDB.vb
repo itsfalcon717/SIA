@@ -18,7 +18,7 @@ Module conexionDB
     Public ip As String = "", user As String = "", pass As String = "", bd As String = ""
     Public conexion As SqlConnection
     Public adaptador As SqlDataAdapter
-    Public tabla As DataTable
+    Public tabla As New DataTable
 
     Public nombre As String
     Public usuario As String
@@ -43,7 +43,9 @@ Module conexionDB
             If ip.Length = 0 Or user.Length = 0 Or pass.Length = 0 Or bd.Length = 0 Then
                 MsgBox("Faltan parametros de conexion", vbCritical, "Aviso")
             Else
-                conexion = New SqlConnection("DataSource=" & ip.Trim & "; InitialCatalog=" & bd.Trim & "; User Id=" & user.Trim & "; Password=" & pass.Trim & ";  ")
+                conexion = New SqlConnection("Data Source=" & ip.Trim & "; Initial Catalog=" & bd.Trim & "; User Id=" & user.Trim & "; Password=" & pass.Trim & ";  ")
+                conexion.Close()
+
             End If
         Catch ex As Exception
             MsgBox(ex.Message, MsgBoxStyle.Critical)
@@ -71,7 +73,7 @@ Module conexionDB
             If ip.Length = 0 Or user.Length = 0 Or pass.Length = 0 Or bd.Length = 0 Then
                 MsgBox("Faltan parametros de conexion", vbCritical, "Aviso")
             Else
-                miconexion = ("DataSource=" & ip.Trim & "; InitialCatalog=" & bd.Trim & "; User Id=" & user.Trim & "; Password=" & pass.Trim & ";  ")
+                miconexion = ("Data Source=" & ip.Trim & "; Initial Catalog=" & bd.Trim & "; User Id=" & user.Trim & "; Password=" & pass.Trim & ";  ")
             End If
         Catch ex As Exception
             MsgBox(ex.Message, MsgBoxStyle.Critical)

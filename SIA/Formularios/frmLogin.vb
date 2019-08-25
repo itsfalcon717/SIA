@@ -1,19 +1,52 @@
-﻿Public Class frmLogin
+﻿'/* ------------------------------------------------------------------------*/
+'/* SISTEMA : SIA(sistema inventariado de activos)
+'/* SUBSISTEMA : SIA
+'/* NOMBRE : frmLogin.vb
+'/* DESCRIPCIÓN : formulario de frmLogin.vb
+'/* AUTOR : Adler Matos
+'/* FECHA CREACIÓN : 25-08--2019
+'/* ------------------------------------------------------------------------*/
+'/* FECHA MODIFICACIÓN     
+'/* ------------------------------------------------------------------------*/
 
-    ' TODO: inserte el código para realizar autenticación personalizada usando el nombre de usuario y la contraseña proporcionada 
-    ' (Consulte http://go.microsoft.com/fwlink/?LinkId=35339).  
-    ' El objeto principal personalizado se puede adjuntar al objeto principal del subproceso actual como se indica a continuación: 
-    '     My.User.CurrentPrincipal = CustomPrincipal
-    ' donde CustomPrincipal es la implementación de IPrincipal utilizada para realizar la autenticación. 
-    ' Posteriormente, My.User devolverá la información de identidad encapsulada en el objeto CustomPrincipal
-    ' como el nombre de usuario, nombre para mostrar, etc.
-
+Imports System.Data.SqlClient
+Public Class frmLogin
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
-        Me.Close()
+        'validaciones
+        If UsernameTextBox.Text = "" Or PasswordTextBox.Text = "" Then
+            MsgBox("Existen datos vacios", vbCritical, "Aviso")                     'cuando usuario y contraseña es vacio 
+        Else
+            Try
+                conexion.Open()                                                         'abrimos la conexion
+                adaptador = New SqlDataAdapter("SELECT * FROM usuarios WHERE cUser='" & UsernameTextBox.Text & "' AND cPassword='" & PasswordTextBox.Text & "'", conexion)
+                tabla.Clear()
+                adaptador.Fill(tabla)
+                If tabla.Rows.Count = 1 Then
+                    'MsgBox("Datos verificados", vbInformation, "Aviso")
+                    UsernameTextBox.Text = ""
+                    PasswordTextBox.Text = ""
+                    Me.Hide()
+                    frmPrincipal.Show()
+                Else
+                    MsgBox("Nombre de usurio o contraseña no validos.", vbInformation, "Aviso")
+                End If
+            Catch ex As Exception
+                MsgBox(ex.Message, vbCritical, "Aviso")
+            End Try
+
+
+        End If
     End Sub
 
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
         Me.Close()
     End Sub
 
+    Private Sub LogoPictureBox_Click(sender As Object, e As EventArgs) Handles LogoPictureBox.Click
+        ConfiguracionServidor.Show()
+    End Sub
+
+    Private Sub frmLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        establecerconexion()
+    End Sub
 End Class
