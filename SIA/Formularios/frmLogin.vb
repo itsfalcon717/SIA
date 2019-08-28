@@ -37,16 +37,18 @@ Public Class frmLogin
 
         End If
     End Sub
-
-    Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
-        Me.Close()
-    End Sub
-
     Private Sub LogoPictureBox_Click(sender As Object, e As EventArgs) Handles LogoPictureBox.Click
         ConfiguracionServidor.Show()
     End Sub
 
     Private Sub frmLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         establecerconexion()
+        UsernameTextBox.Focus()
+        UsernameTextBox.Text = ""
     End Sub
+
+    Private Sub Cancel_Click_1(sender As Object, e As EventArgs) Handles Cancel.Click
+        Me.Close()
+    End Sub
+
 End Class
