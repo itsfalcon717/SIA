@@ -11,12 +11,34 @@
 Imports System.IO
 
 Public Class ConfiguracionServidor
-    Private Sub btnCancelar_Click_1(sender As Object, e As EventArgs) Handles btnCancelar.Click
-        Me.Close()
-        Me.Dispose()
+
+
+
+    Private Sub ConfiguracionServidor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'carga automatica a los textos del txt
+        Try
+            If File.Exists(Application.StartupPath + "\IP.text") Then
+                txtIpServidor.Text = My.Computer.FileSystem.ReadAllText(Application.StartupPath + "\IP.text")
+            End If
+            If File.Exists(Application.StartupPath + "\USER.text") Then
+                txtUsuario.Text = My.Computer.FileSystem.ReadAllText(Application.StartupPath + "\USER.text")
+            End If
+
+            If File.Exists(Application.StartupPath + "\PASS.text") Then
+                txtPass.Text = My.Computer.FileSystem.ReadAllText(Application.StartupPath + "\PASS.text")
+            End If
+
+            If File.Exists(Application.StartupPath + "\DB.text") Then
+                txtBaseDatos.Text = My.Computer.FileSystem.ReadAllText(Application.StartupPath + "\DB.text")
+            End If
+
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.Critical)
+        End Try
+
     End Sub
 
-    Private Sub btnConectar_Click_1(sender As Object, e As EventArgs) Handles btnConectar.Click
+    Private Sub btnConectar_Click(sender As Object, e As EventArgs) Handles btnConectar.Click
         If txtIpServidor.Text = "" Or txtPass.Text = "" Or txtBaseDatos.Text = "" Or txtUsuario.Text = "" Then
             MsgBox("Completar todo los campos", vbCritical, "Aviso")
         End If
@@ -47,27 +69,8 @@ Public Class ConfiguracionServidor
 
     End Sub
 
-    Private Sub ConfiguracionServidor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'carga automatica a los textos del txt
-        Try
-            If File.Exists(Application.StartupPath + "\IP.text") Then
-                txtIpServidor.Text = My.Computer.FileSystem.ReadAllText(Application.StartupPath + "\IP.text")
-            End If
-            If File.Exists(Application.StartupPath + "\USER.text") Then
-                txtUsuario.Text = My.Computer.FileSystem.ReadAllText(Application.StartupPath + "\USER.text")
-            End If
-
-            If File.Exists(Application.StartupPath + "\PASS.text") Then
-                txtPass.Text = My.Computer.FileSystem.ReadAllText(Application.StartupPath + "\PASS.text")
-            End If
-
-            If File.Exists(Application.StartupPath + "\DB.text") Then
-                txtBaseDatos.Text = My.Computer.FileSystem.ReadAllText(Application.StartupPath + "\DB.text")
-            End If
-
-        Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical)
-        End Try
-
+    Private Sub btnCancelar_Click(sender As Object, e As EventArgs) Handles btnCancelar.Click
+        Me.Hide()
+        frmLogin.Show()
     End Sub
 End Class

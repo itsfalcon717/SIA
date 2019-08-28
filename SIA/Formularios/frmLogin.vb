@@ -39,6 +39,8 @@ Public Class frmLogin
     End Sub
     Private Sub LogoPictureBox_Click(sender As Object, e As EventArgs) Handles LogoPictureBox.Click
         ConfiguracionServidor.Show()
+        Me.Hide()
+
     End Sub
 
     Private Sub frmLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
