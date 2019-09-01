@@ -73,4 +73,13 @@ Public Class ConfiguracionServidor
         Me.Hide()
         frmLogin.Show()
     End Sub
+
+    Private Sub btnCambiar_Click(sender As Object, e As EventArgs) Handles btnCambiar.Click
+        txtBaseDatos.Text = ""
+        txtIpServidor.Text = ""
+        txtPass.Text = ""
+        txtUsuario.Text = ""
+        txtIpServidor.Focus()
+
+    End Sub
 End Class

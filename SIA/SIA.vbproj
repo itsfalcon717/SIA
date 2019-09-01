@@ -93,6 +93,12 @@
     <Compile Include="Formularios\frmPrincipal.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\src\frmalert\frmAlert.Designer.vb">
+      <DependentUpon>frmAlert.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\src\frmalert\frmAlert.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -119,11 +125,14 @@
     <EmbeddedResource Include="Formularios\frmPrincipal.resx">
       <DependentUpon>frmPrincipal.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\src\frmalert\frmAlert.resx">
+      <DependentUpon>frmAlert.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +147,34 @@
     </None>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Formularios\src\img\bar-graph1.png" />
+    <Content Include="Formularios\src\img\calendar %281%291.png" />
+    <Content Include="Formularios\src\img\cancel.png" />
+    <Content Include="Formularios\src\img\Close.png" />
+    <Content Include="Formularios\src\img\health %281%291.png" />
+    <Content Include="Formularios\src\img\Health-PNG-Image.png" />
+    <Content Include="Formularios\src\img\Health-PNG-Image2.png" />
+    <Content Include="Formularios\src\img\left-arrow %281%29.png" />
+    <Content Include="Formularios\src\img\logout %281%291.png" />
+    <Content Include="Formularios\src\img\loupe %281%29.png" />
+    <Content Include="Formularios\src\img\maximize3.png" />
+    <Content Include="Formularios\src\img\menu.png" />
+    <Content Include="Formularios\src\img\menu2.png" />
+    <Content Include="Formularios\src\img\Minimize.png" />
+    <Content Include="Formularios\src\img\Normal.png" />
+    <Content Include="Formularios\src\img\patient %281%291.png" />
+    <Content Include="Formularios\src\img\payment1.png" />
+    <Content Include="Formularios\src\img\person-settings1.png" />
+    <Content Include="Formularios\src\img\phone-book %281%291.png" />
+    <Content Include="Formularios\src\img\seo1.png" />
+    <Content Include="Formularios\src\img\SIA %281%29.png" />
+    <Content Include="Formularios\src\img\SIA %282%29.png" />
+    <Content Include="Formularios\src\img\SIA.png" />
+    <Content Include="Formularios\src\img\SIA1.png" />
+    <Content Include="Formularios\src\img\user %281%29.png" />
+    <Content Include="Formularios\src\img\user.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

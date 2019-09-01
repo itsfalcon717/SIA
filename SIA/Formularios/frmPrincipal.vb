@@ -1,88 +1,94 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Runtime.InteropServices
 
 Public Class frmPrincipal
+#Region "FUNCIONALIDAD DEL FORMULARIO"
+    'RESIZE DEL FORMULARIO- CAMBIAR TAMAÑO
+    Dim lx, ly, sw, sh As Integer
+    Dim cGrip As Integer = 10
 
-    Private Sub ShowNewForm(ByVal sender As Object, ByVal e As EventArgs) Handles NewToolStripMenuItem.Click, NewToolStripButton.Click, NewWindowToolStripMenuItem.Click
-        ' Cree una nueva instancia del formulario secundario.
-        Dim ChildForm As New System.Windows.Forms.Form
-        ' Conviértalo en un elemento secundario de este formulario MDI antes de mostrarlo.
-        ChildForm.MdiParent = Me
-
-        m_ChildFormNumber += 1
-        ChildForm.Text = "Ventana " & m_ChildFormNumber
-
-        ChildForm.Show()
-    End Sub
-
-    Private Sub OpenFile(ByVal sender As Object, ByVal e As EventArgs) Handles OpenToolStripMenuItem.Click, OpenToolStripButton.Click
-        Dim OpenFileDialog As New OpenFileDialog
-        OpenFileDialog.InitialDirectory = My.Computer.FileSystem.SpecialDirectories.MyDocuments
-        OpenFileDialog.Filter = "Archivos de texto (*.txt)|*.txt|Todos los archivos (*.*)|*.*"
-        If (OpenFileDialog.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK) Then
-            Dim FileName As String = OpenFileDialog.FileName
-            ' TODO: agregue código aquí para abrir el archivo.
+    Protected Overrides Sub WndProc(ByRef m As Message)
+        If (m.Msg = 132) Then
+            Dim pos As Point = New Point((m.LParam.ToInt32 And 65535), (m.LParam.ToInt32 + 16))
+            pos = Me.PointToClient(pos)
+            If ((pos.X _
+                        >= (Me.ClientSize.Width - cGrip)) _
+                        AndAlso (pos.Y _
+                        >= (Me.ClientSize.Height - cGrip))) Then
+                m.Result = CType(17, IntPtr)
+                Return
+            End If
         End If
+        MyBase.WndProc(m)
+    End Sub
+    '----------------DIBUJAR RECTANGULO / EXCLUIR ESQUINA PANEL 
+    Dim sizeGripRectangle As Rectangle
+    Dim tolerance As Integer = 15
+
+    Protected Overrides Sub OnSizeChanged(ByVal e As EventArgs)
+        MyBase.OnSizeChanged(e)
+        Dim region = New Region(New Rectangle(0, 0, Me.ClientRectangle.Width, Me.ClientRectangle.Height))
+        sizeGripRectangle = New Rectangle((Me.ClientRectangle.Width - tolerance), (Me.ClientRectangle.Height - tolerance), tolerance, tolerance)
+        region.Exclude(sizeGripRectangle)
+        Me.panelPricipal.Region = region
+        Me.Invalidate()
     End Sub
 
-    Private Sub SaveAsToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles SaveAsToolStripMenuItem.Click
-        Dim SaveFileDialog As New SaveFileDialog
-        SaveFileDialog.InitialDirectory = My.Computer.FileSystem.SpecialDirectories.MyDocuments
-        SaveFileDialog.Filter = "Archivos de texto (*.txt)|*.txt|Todos los archivos (*.*)|*.*"
+    '----------------COLOR Y GRIP DE RECTANGULO INFERIOR
+    Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Dim blueBrush As SolidBrush = New SolidBrush(Color.FromArgb(64, 64, 64))
+        e.Graphics.FillRectangle(blueBrush, sizeGripRectangle)
+        MyBase.OnPaint(e)
+        ControlPaint.DrawSizeGrip(e.Graphics, Color.Transparent, sizeGripRectangle)
+    End Sub
+    'ARRASTRAR FORMULARIO
+    <DllImport("user32.DLL", EntryPoint:="ReleaseCapture")>
+    Private Shared Sub ReleaseCapture()
+    End Sub
 
-        If (SaveFileDialog.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK) Then
-            Dim FileName As String = SaveFileDialog.FileName
-            ' TODO: agregue código aquí para guardar el contenido actual del formulario en un archivo.
-        End If
+    Private Sub pbmaximizar_Click(sender As Object, e As EventArgs) Handles pbmaximizar.Click
+        lx = Me.Location.X
+        ly = Me.Location.Y
+        sw = Me.Size.Width
+        sh = Me.Size.Height
+
+        Me.Size = Screen.PrimaryScreen.WorkingArea.Size
+        Me.Location = Screen.PrimaryScreen.WorkingArea.Location
+        pbRestaurar.Visible = True
+        pbmaximizar.Visible = False
+    End Sub
+
+    Private Sub pbRestaurar_Click(sender As Object, e As EventArgs) Handles pbRestaurar.Click
+        Me.Size = New Size(sw, sh)
+        Me.Location = New Point(lx, ly)
+        pbRestaurar.Visible = False
+        pbmaximizar.Visible = True
+    End Sub
+
+    Private Sub pbMinized_Click(sender As Object, e As EventArgs) Handles pbMinized.Click
+        WindowState = FormWindowState.Minimized
+    End Sub
+
+    <DllImport("user32.DLL", EntryPoint:="SendMessage")>
+    Private Shared Sub SendMessage(ByVal hWnd As System.IntPtr, ByVal wMsg As Integer, ByVal wParam As Integer, ByVal lParam As Integer)
+    End Sub
+    Private Sub PanelTitulo_MouseMove(sender As Object, e As MouseEventArgs) Handles PanelTitulo.MouseMove
+        ReleaseCapture()
+        SendMessage(Me.Handle, &H112&, &HF012&, 0)
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        Application.Exit()
+
     End Sub
 
 
-    Private Sub ExitToolsStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ExitToolStripMenuItem.Click
-        Me.Close()
+#End Region
+
+#Region "Abrir panel"
+    Private Sub abrirPanel()
+
     End Sub
 
-    Private Sub CutToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CutToolStripMenuItem.Click
-        ' Utilice My.Computer.Clipboard para insertar el texto o las imágenes seleccionadas en el Portapapeles
-    End Sub
-
-    Private Sub CopyToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CopyToolStripMenuItem.Click
-        ' Utilice My.Computer.Clipboard para insertar el texto o las imágenes seleccionadas en el Portapapeles
-    End Sub
-
-    Private Sub PasteToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles PasteToolStripMenuItem.Click
-        'Utilice My.Computer.Clipboard.GetText() o My.Computer.Clipboard.GetData para recuperar la información del Portapapeles.
-    End Sub
-
-    Private Sub ToolBarToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ToolBarToolStripMenuItem.Click
-        Me.ToolStrip.Visible = Me.ToolBarToolStripMenuItem.Checked
-    End Sub
-
-    Private Sub StatusBarToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles StatusBarToolStripMenuItem.Click
-        Me.StatusStrip.Visible = Me.StatusBarToolStripMenuItem.Checked
-    End Sub
-
-    Private Sub CascadeToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CascadeToolStripMenuItem.Click
-        Me.LayoutMdi(MdiLayout.Cascade)
-    End Sub
-
-    Private Sub TileVerticalToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TileVerticalToolStripMenuItem.Click
-        Me.LayoutMdi(MdiLayout.TileVertical)
-    End Sub
-
-    Private Sub TileHorizontalToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TileHorizontalToolStripMenuItem.Click
-        Me.LayoutMdi(MdiLayout.TileHorizontal)
-    End Sub
-
-    Private Sub ArrangeIconsToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ArrangeIconsToolStripMenuItem.Click
-        Me.LayoutMdi(MdiLayout.ArrangeIcons)
-    End Sub
-
-    Private Sub CloseAllToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CloseAllToolStripMenuItem.Click
-        ' Cierre todos los formularios secundarios del principal.
-        For Each ChildForm As Form In Me.MdiChildren
-            ChildForm.Close()
-        Next
-    End Sub
-
-    Private m_ChildFormNumber As Integer
+#End Region
 
 End Class

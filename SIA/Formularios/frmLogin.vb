@@ -11,10 +11,60 @@
 
 Imports System.Data.SqlClient
 Public Class frmLogin
-    Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
+
+
+    Private Sub frmLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        establecerconexion()
+    End Sub
+
+    Private Sub pbCerrar_Click(sender As Object, e As EventArgs) Handles pbCerrar.Click
+        Application.Exit()
+
+    End Sub
+
+    Private Sub UsernameTextBox_Enter(sender As Object, e As EventArgs) Handles UsernameTextBox.Enter
+        If UsernameTextBox.Text = "Usuario" Then
+            UsernameTextBox.Text = ""
+            UsernameTextBox.ForeColor = Color.LightGray
+
+        End If
+
+    End Sub
+
+    Private Sub UsernameTextBox_Leave(sender As Object, e As EventArgs) Handles UsernameTextBox.Leave
+        If UsernameTextBox.Text = "" Then
+            UsernameTextBox.Text = "Usuario"
+            UsernameTextBox.ForeColor = Color.DimGray
+        End If
+
+    End Sub
+
+    Private Sub PasswordTextBox_Enter(sender As Object, e As EventArgs) Handles PasswordTextBox.Enter
+        If PasswordTextBox.Text = "Contraseña" Then
+            PasswordTextBox.Text = ""
+            PasswordTextBox.ForeColor = Color.LightGray
+            PasswordTextBox.UseSystemPasswordChar = True
+        End If
+    End Sub
+
+    Private Sub PasswordTextBox_Leave(sender As Object, e As EventArgs) Handles PasswordTextBox.Leave
+        If PasswordTextBox.Text = "" Then
+            PasswordTextBox.Text = "Contraseña"
+            PasswordTextBox.ForeColor = Color.DimGray
+            PasswordTextBox.UseSystemPasswordChar = False
+        End If
+    End Sub
+
+    Private Sub pbMinimizar_Click(sender As Object, e As EventArgs) Handles pbMinimizar.Click
+        WindowState = FormWindowState.Minimized
+
+    End Sub
+
+    Private Sub btnAceptar_Click(sender As Object, e As EventArgs) Handles btnAceptar.Click
         'validaciones
         If UsernameTextBox.Text = "" Or PasswordTextBox.Text = "" Then
             MsgBox("Existen datos vacios", vbCritical, "Aviso")                     'cuando usuario y contraseña es vacio 
+
         Else
             Try
                 conexion.Open()                                                         'abrimos la conexion
@@ -33,24 +83,12 @@ Public Class frmLogin
             Catch ex As Exception
                 MsgBox(ex.Message, vbCritical, "Aviso")
             End Try
-
-
         End If
+
     End Sub
-    Private Sub LogoPictureBox_Click(sender As Object, e As EventArgs) Handles LogoPictureBox.Click
+
+    Private Sub LinkLabel2_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel2.LinkClicked
         ConfiguracionServidor.Show()
         Me.Hide()
-
     End Sub
-
-    Private Sub frmLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        establecerconexion()
-        UsernameTextBox.Focus()
-        UsernameTextBox.Text = ""
-    End Sub
-
-    Private Sub Cancel_Click_1(sender As Object, e As EventArgs) Handles Cancel.Click
-        Me.Close()
-    End Sub
-
 End Class
