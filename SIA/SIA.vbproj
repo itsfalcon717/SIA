@@ -99,6 +99,12 @@
     <Compile Include="Formularios\src\frmalert\frmAlert.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\vista\frmVista1.Designer.vb">
+      <DependentUpon>frmVista1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\vista\frmVista1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -127,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\src\frmalert\frmAlert.resx">
       <DependentUpon>frmAlert.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\vista\frmVista1.resx">
+      <DependentUpon>frmVista1.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

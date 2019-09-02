@@ -72,6 +72,12 @@ Public Class frmLogin
                 tabla.Clear()
                 adaptador.Fill(tabla)
                 If tabla.Rows.Count = 1 Then
+                    Dim fila As DataRow = tabla.Rows(0)
+                    nombre = Trim(fila("cNombre").ToString)
+                    tipousuario = Trim(fila("pTipoUser").ToString)
+
+                    frmPrincipal.nombrecompleto.Text = nombre
+                    frmPrincipal.tipocompleto.Text = tipousuario
                     'MsgBox("Datos verificados", vbInformation, "Aviso")
                     UsernameTextBox.Text = ""
                     PasswordTextBox.Text = ""

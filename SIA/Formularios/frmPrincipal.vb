@@ -71,6 +71,70 @@ Public Class frmPrincipal
     <DllImport("user32.DLL", EntryPoint:="SendMessage")>
     Private Shared Sub SendMessage(ByVal hWnd As System.IntPtr, ByVal wMsg As Integer, ByVal wParam As Integer, ByVal lParam As Integer)
     End Sub
+
+#End Region
+
+#Region "Abrir panel"
+    Private Sub abrirPanel(Of Myform As {Form, New})()
+        Dim formulario As Form
+        formulario = PanelVista.Controls.OfType(Of Myform)().FirstOrDefault()  'busca el formulario
+
+
+        If formulario Is Nothing Then
+            formulario = New Myform()
+            formulario.TopLevel = False
+
+            formulario.FormBorderStyle = FormBorderStyle.None
+            formulario.Dock = DockStyle.Fill
+
+            PanelVista.Controls.Add(formulario)
+            PanelVista.Tag = formulario
+            formulario.Show()
+            formulario.BringToFront()
+
+        Else
+            formulario.BringToFront()
+
+
+        End If
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        abrirPanel(Of frmVista1)()
+    End Sub
+
+    Private Sub btnUser_Click(sender As Object, e As EventArgs) Handles btnUser.Click
+        pinfo.Visible = False
+        btnUser1.Visible = True
+        btnUser.Visible = False
+
+        nombre.Visible = False
+        nombrecompleto.Visible = False
+        tipo.Visible = False
+        tipocompleto.Visible = False
+    End Sub
+
+    Private Sub btnUser1_Click(sender As Object, e As EventArgs) Handles btnUser1.Click
+        pinfo.Visible = True
+        btnUser.Visible = True
+        btnUser1.Visible = False
+        nombre.Visible = True
+        nombrecompleto.Visible = True
+        tipo.Visible = True
+        tipocompleto.Visible = True
+    End Sub
+
+    Private Sub frmPrincipal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+
+
+        pinfo.Visible = False
+        nombre.Visible = False
+        nombrecompleto.Visible = False
+        tipo.Visible = False
+        tipocompleto.Visible = False
+    End Sub
+
     Private Sub PanelTitulo_MouseMove(sender As Object, e As MouseEventArgs) Handles PanelTitulo.MouseMove
         ReleaseCapture()
         SendMessage(Me.Handle, &H112&, &HF012&, 0)
@@ -78,14 +142,6 @@ Public Class frmPrincipal
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
         Application.Exit()
-
-    End Sub
-
-
-#End Region
-
-#Region "Abrir panel"
-    Private Sub abrirPanel()
 
     End Sub
 
